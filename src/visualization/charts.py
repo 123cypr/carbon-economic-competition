@@ -425,12 +425,18 @@ class CarbonVisualization:
     
     def save_figure(self, fig, filename: str, format: str = 'html'):
         """保存图表"""
+        from pathlib import Path
+        # 获取项目根目录下的数据文件夹路径
+        script_dir = Path(__file__).parent.parent  # 从visualization目录回到src目录
+        data_dir = script_dir / "data"
+        data_dir.mkdir(exist_ok=True)
+        
         if format == 'html':
-            fig.write_html(f"src/data/{filename}.html")
+            fig.write_html(str(data_dir / f"{filename}.html"))
         elif format == 'png':
-            fig.write_image(f"src/data/{filename}.png", width=1200, height=800)
+            fig.write_image(str(data_dir / f"{filename}.png"), width=1200, height=800)
         elif format == 'pdf':
-            fig.write_image(f"src/data/{filename}.pdf", width=1200, height=800)
+            fig.write_image(str(data_dir / f"{filename}.pdf"), width=1200, height=800)
 
 if __name__ == "__main__":
     # 测试可视化功能

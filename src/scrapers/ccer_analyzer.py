@@ -264,7 +264,12 @@ class CCERAnalyzer:
     
     def save_data(self, data: pd.DataFrame, filename: str):
         """保存数据到文件"""
-        filepath = f"src/data/{filename}"
+        from pathlib import Path
+        # 获取项目根目录下的数据文件夹路径
+        script_dir = Path(__file__).parent.parent  # 从scrapers目录回到src目录
+        data_dir = script_dir / "data"
+        data_dir.mkdir(exist_ok=True)
+        filepath = data_dir / filename
         data.to_csv(filepath, index=False, encoding='utf-8-sig')
         logger.info(f"数据已保存到 {filepath}")
 
@@ -284,7 +289,11 @@ if __name__ == "__main__":
     
     # 保存分析结果
     import json
-    with open("src/data/ccer_impact_analysis.json", "w", encoding='utf-8') as f:
+    from pathlib import Path
+    script_dir = Path(__file__).parent.parent  # 从scrapers目录回到src目录
+    data_dir = script_dir / "data"
+    data_dir.mkdir(exist_ok=True)
+    with open(data_dir / "ccer_impact_analysis.json", "w", encoding='utf-8') as f:
         json.dump(impact_results, f, ensure_ascii=False, indent=2)
     
     print("CCER分析完成！")
